@@ -1,0 +1,52 @@
+{
+  "memory": {
+    "short_term_capacity": 200,
+    "persistence_file": "os2_long_term_memory.json",
+    "consolidation_interval": 1800,
+    "max_items": 5000,
+    "embedding_dim": 768,
+    "vector_model": "bert-base-uncased"
+  },
+  "processing": {
+    "quality_threshold": 0.85,
+    "pathway_settings": {
+      "rapid": {
+        "max_length": 50,
+        "priority": 1
+      },
+      "intensive": {
+        "max_context_items": 5,
+        "priority": 2
+      },
+      "standard": {
+        "priority": 3
+      }
+    },
+    "preprocessing_enabled": true,
+    "error_correction": true
+  },
+  "api": {
+    "base_url": "https://api.advanced-llm.com/v2",
+    "timeout": 10,
+    "retry_attempts": 3,
+    "use_async": true,
+    "auth": {
+      "token": "your_new_advanced_api_token"
+    }
+  },
+  "learning": {
+    "learning_rate": 0.0005,
+    "self_optimization_interval": 15,
+    "feedback_integration": true
+  },
+  "advanced": {
+    "logging_level": "DEBUG",
+    "debug_mode": true,
+    "distributed_training": false,
+    "model_fine_tuning": {
+      "enabled": true,
+      "epochs": 3,
+      "batch_size": 16
+    }
+  }
+}

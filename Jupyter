@@ -1,0 +1,107 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# OS1 Enhanced Dream System Demo\n",
+    "\n",
+    "This notebook demonstrates the key features of the OS1 Enhanced Dream System."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "source": [
+    "import asyncio\n",
+    "from os1_dream_system import DreamSystem, EnhancedDreamConfig\n",
+    "\n",
+    "# Initialize the system\n",
+    "config = EnhancedDreamConfig(\n",
+    "    memory_decay_rate=0.05,  # Slower memory decay\n",
+    "    semantic_similarity_threshold=0.7  # More lenient matching\n",
+    ")\n",
+    "system = DreamSystem(config)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Basic Prompt Processing"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "source": [
+    "async def process_prompts():\n",
+    "    prompts = [\n",
+    "        \"How does consciousness emerge from neural patterns?\",\n",
+    "        \"What role does quantum mechanics play in cognitive processes?\",\n",
+    "        \"How might artificial consciousness differ from biological consciousness?\"\n",
+    "    ]\n",
+    "    \n",
+    "    for prompt in prompts:\n",
+    "        response = await system.process_prompt(prompt)\n",
+    "        print(f\"Prompt: {prompt}\\nResponse: {response}\\n\")\n",
+    "\n",
+    "await process_prompts()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Memory Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "source": [
+    "# Analyze memory connections\n",
+    "query_embedding = system.embedder.embed(\"consciousness and quantum mechanics\")\n",
+    "memories = system.memory.retrieve(query_embedding)\n",
+    "\n",
+    "print(\"Related Memories:\")\n",
+    "for mem in memories:\n",
+    "    print(f\"- {mem['text']}\\n  Response: {mem['response']}\\n\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Journal Reflection Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "source": [
+    "# Analyze recent reflections\n",
+    "recent_entries = system.journal.entries[-5:]\n",
+    "\n",
+    "print(\"Recent Insights:\")\n",
+    "for entry in recent_entries:\n",
+    "    print(f\"Time: {entry['timestamp']}\")\n",
+    "    print(f\"Prompt: {entry['prompt']}\")\n",
+    "    print(f\"Insight: {entry['insight']}\\n\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

@@ -1,0 +1,61 @@
+import unittest
+import asyncio
+import torch
+import numpy as np
+from os1_dream_system import (
+    EnhancedDreamConfig,
+    DreamSystem,
+    DreamLLMEmbedder,
+    FAISSMemory,
+    OS1Journal
+)
+
+class TestEnhancedDreamSystem(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.config = EnhancedDreamConfig(
+            log_file="test_journal.json",
+            dummy_api_delay=0.01
+        )
+        cls.dream_system = DreamSystem(cls.config)
+
+    def test_embedder_initialization(self):
+        embedder = DreamLLMEmbedder(self.config)
+        self.assertIsNotNone(embedder.model)
+        self.assertIsNotNone(embedder.tokenizer)
+
+    def test_memory_storage_and_retrieval(self):
+        memory = FAISSMemory(self.config)
+        test_text = "Test memory storage"
+        test_embedding = torch.randn(self.config.embedding_dim)
+        test_response = "Test response"
+        
+        mem_id = memory.store(test_text, test_embedding, test_response)
+        self.assertIsNotNone(mem_id)
+        
+        retrieved = memory.retrieve(test_embedding, top_k=1)
+        self.assertEqual(len(retrieved), 1)
+        self.assertEqual(retrieved[0]['text'], test_text)
+
+    def test_journal_reflection(self):
+        journal = OS1Journal(self.config)
+        test_prompt = "Test reflection"
+        test_memories = [{"text": "Memory 1"}, {"text": "Memory 2"}]
+        test_response = "Test response"
+        
+        reflection = journal.reflect(test_prompt, test_memories, test_response)
+        self.assertIn("timestamp", reflection)
+        self.assertIn("prompt", reflection)
+        self.assertIn("memory_summary", reflection)
+
+    async def test_prompt_processing(self):
+        prompt = "How does consciousness emerge from neural patterns?"
+        response = await self.dream_system.process_prompt(prompt)
+        self.assertIsInstance(response, str)
+        self.assertIn("Memory ID:", response)
+
+def run_tests():
+    unittest.main()
+
+if __name__ == '__main__':
+    run_tests()
